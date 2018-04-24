@@ -17,7 +17,6 @@ library(GGally)
 
 ```{r Load_the_Data}
 # Load the Data
-setwd('C:/Users/amrsic/Documents/GitHub/Data-Analyst-Nanodegree/Projects/Explore and Summarize Data')
 winedf <- read.csv("wineQualityReds.csv", sep = ',')
 ```
 ### Introduction into the dataset
@@ -38,20 +37,27 @@ summary(winedf)
 # Univariate Plots Section
 ```{r}
 redwine_hist_qplot <- function(invar, inxlabel, inbinwidth) {
-  return (qplot(x = invar, data = winedf, xlab = inxlabel, binwidth=inbinwidth))
+  return (qplot(x = invar
+                , data = winedf
+                , xlab = inxlabel
+                , binwidth=inbinwidth))
 }
 ```
 
 #### Fixed Acidity
 ```{r Fixed Acidity Histogram}
-p1 <- redwine_hist_qplot (winedf$fixed.acidity, 'fixed acidity (g / dm^3)',0.3)
+p1 <- redwine_hist_qplot (winedf$fixed.acidity,
+                          'fixed acidity (g / dm^3)',0.3)
 
-p2 <- redwine_hist_qplot (winedf$fixed.acidity, 'fixed acidity (g / dm^3) ommit top 1%',0.5) +
-  coord_cartesian(xlim = c(0,quantile(winedf$fixed.acidity, 0.99))) 
-
+p2 <- redwine_hist_qplot (winedf$fixed.acidity,
+                          'fixed acidity (g / dm^3) ommit top 1%',0.5) +
+coord_cartesian(xlim = c(0,
+                         quantile(winedf$fixed.acidity, 
+                                  0.99)
+                         )
+                ) 
 grid.arrange(p1,p2,ncol=2)
 summary(winedf$fixed.acidity)
-
 ```
 - Distribution of fixed acidity is right-skewed (positive skewed). 
 - Values are between 4 and 16 g / dm^3, and concentrated around 7.9. 
@@ -59,7 +65,9 @@ summary(winedf$fixed.acidity)
 
 #### Volatile acidity
 ```{r Volatile acidity Histogram}
-redwine_hist_qplot (winedf$volatile.acidity, 'volatile acidity (g / dm^3)',0.03)
+redwine_hist_qplot (winedf$volatile.acidity,
+                    'volatile acidity (g / dm^3)'
+                    ,0.03)
 
 summary(winedf$volatile.acidity)
 ```
@@ -69,11 +77,22 @@ summary(winedf$volatile.acidity)
 
 #### Citric Acid
 ```{r Citric Acid Histogram}
-redwine_hist_qplot (winedf$citric.acid, 'citric acid (g / dm^3)',0.02)
+redwine_hist_qplot (winedf$citric.acid,
+                    'citric acid (g / dm^3)',
+                    0.02
+                    )
 
-winedf_cawz <- winedf[winedf$citric.acid > 0,] #cawz ->citric.acid withot zero
-grid.arrange(qplot(winedf$quality, xlab = "Full Wine Data"), 
-             qplot(winedf_cawz$quality,xlab = "Wine Data with citric.acid>0"), ncol=2)
+winedf_cawz <- winedf[winedf$citric.acid > 0,]
+
+p1 <- ggplot(winedf, aes(x=factor(quality))) + 
+  geom_bar()+
+  xlab ("Full Wine Data")
+
+p2 <- ggplot(winedf_cawz, aes(x=factor(quality))) + 
+  geom_bar()+
+  xlab ("Wine Data with citric.acid>0")
+
+grid.arrange(p1,p2,ncol=2)
 
 summary(winedf$citric.acid)
 table(winedf$citric.acid[winedf$citric.acid == 0])
@@ -85,10 +104,15 @@ table(winedf$citric.acid[winedf$citric.acid == 0])
 
 #### Residual Sugar
 ```{r Residual Sugar Histogram}
-p1 <- redwine_hist_qplot (winedf$residual.sugar, 'residual sugar (g / dm^3)',0.5)
+p1 <- redwine_hist_qplot (winedf$residual.sugar, 
+                          'residual sugar (g / dm^3)',
+                          0.5)
 
-p2 <- redwine_hist_qplot (winedf$residual.sugar, 'residual sugar ommit top 1%',0.5) +
-  coord_cartesian(xlim = c(0,quantile(winedf$residual.sugar, 0.99))) 
+p2 <- redwine_hist_qplot (winedf$residual.sugar, 
+                          'residual sugar ommit top 1%',
+                          0.5) +
+coord_cartesian(xlim = c(0,quantile(winedf$residual.sugar, 
+                                    0.99)))
 
 grid.arrange(p1,p2,ncol=2)
 
@@ -100,7 +124,9 @@ summary(winedf$residual.sugar)
 
 #### Chlorides
 ```{r Chlorides Histogram}
-redwine_hist_qplot (winedf$chlorides, 'chlorides (g / dm^3)',0.01)
+redwine_hist_qplot (winedf$chlorides, 
+                    'chlorides (g / dm^3)',
+                    0.01)
 
 summary(winedf$chlorides)
 ```
@@ -110,10 +136,14 @@ summary(winedf$chlorides)
 
 #### Free sulfur dioxide
 ```{r Free sulfur dioxide Histogram}
-p1 <- redwine_hist_qplot (winedf$free.sulfur.dioxide, 'free sulfur dioxide (mg / dm^3)',1)
+p1 <- redwine_hist_qplot (winedf$free.sulfur.dioxide, 
+                          'free sulfur dioxide (mg / dm^3)',1)
 
-p2 <- redwine_hist_qplot (winedf$free.sulfur.dioxide, 'free sulfur dioxide mg / dm^3 ommit top 1%',1) +
-  coord_cartesian(xlim = c(0,quantile(winedf$free.sulfur.dioxide, 0.99))) 
+p2 <- redwine_hist_qplot (winedf$free.sulfur.dioxide, 
+                          'free sulfur dioxide mg / dm^3 ommit top 1%',
+                          1) +
+  coord_cartesian(xlim = c(0,quantile(winedf$free.sulfur.dioxide, 
+                                      0.99))) 
 
 grid.arrange(p1,p2,ncol=2)
 
@@ -125,12 +155,19 @@ summary(winedf$free.sulfur.dioxide)
 
 #### Total sulfur dioxide
 ```{r Total sulfur dioxide Histogram}
-p1 <- redwine_hist_qplot (winedf$total.sulfur.dioxide, 'total sulfur dioxide (mg / dm^3)',2)
+p1 <- redwine_hist_qplot (winedf$total.sulfur.dioxide, 
+                          'total sulfur dioxide (mg / dm^3)',
+                          2)
 
-p2 <- redwine_hist_qplot (winedf$free.sulfur.dioxide, 'total sulfur dioxide ommit top 1%',1) +
-  coord_cartesian(xlim = c(0,quantile(winedf$free.sulfur.dioxide, 0.99))) 
+p2 <- redwine_hist_qplot (winedf$free.sulfur.dioxide, 
+                          'total sulfur dioxide ommit top 1%',
+                          1) +
+  coord_cartesian(xlim = c(0,quantile(winedf$free.sulfur.dioxide, 
+                                      0.99))) 
 
-p3 <-redwine_hist_qplot (log10(winedf$total.sulfur.dioxide), 'log10(total sulfur dioxide)',0.05)
+p3 <-redwine_hist_qplot (log10(winedf$total.sulfur.dioxide), 
+                         'log10(total sulfur dioxide)',
+                         0.05)
 
 grid.arrange(p1,p2,p3,ncol=2)
 summary(winedf$total.sulfur.dioxide)
@@ -142,7 +179,9 @@ summary(winedf$total.sulfur.dioxide)
 
 #### Density
 ```{r Density Histogram}
-redwine_hist_qplot (winedf$density, 'destiny (g / cm^3)',0.0005)
+redwine_hist_qplot (winedf$density, 
+                    'destiny (g / cm^3)',
+                    0.0005)
 
 summary(winedf$density)
 ```
@@ -151,7 +190,9 @@ summary(winedf$density)
 
 #### pH
 ```{r pH Histogram}
-redwine_hist_qplot (winedf$pH, 'pH',0.05)
+redwine_hist_qplot (winedf$pH, 
+                    'pH',
+                    0.05)
 
 summary(winedf$pH)
 ```
@@ -160,7 +201,9 @@ summary(winedf$pH)
 
 #### Sulphates
 ```{r Sulphates Histogram}
-redwine_hist_qplot (winedf$sulphates, 'sulphates (g / dm3)',0.03)
+redwine_hist_qplot (winedf$sulphates, 
+                    'sulphates (g / dm3)',
+                    0.03)
 
 summary(winedf$sulphates)
 ```
@@ -170,7 +213,9 @@ summary(winedf$sulphates)
 
 #### Alcohol
 ```{r Alcohol Histogram}
-redwine_hist_qplot (winedf$alcohol, 'alcohol (% by volume)',0.25)
+redwine_hist_qplot (winedf$alcohol, 
+                    'alcohol (% by volume)',
+                    0.25)
 
 summary(winedf$alcohol)
 ```
@@ -180,7 +225,9 @@ summary(winedf$alcohol)
 
 #### Quality
 ```{r Quality}
-redwine_hist_qplot (winedf$quality, 'Quality',0.3)
+ggplot(winedf, aes(x=factor(quality))) + 
+  geom_bar() +
+  xlab("Quality")
 
 summary(winedf$quality)
 
@@ -188,7 +235,12 @@ winedf$quality.class <-  cut(winedf$quality
                          ,c(1, 4, 6, 10)
                          ,labels = c("Bad", "Average", "Excellent"))
 
-qplot(winedf$quality.class, xlab="quality")
+ggplot(winedf, 
+       aes(x=factor(quality.class))) + 
+  geom_bar()+
+  xlab("Quality")
+  
+
 summary(winedf$quality.class)
 ```
 - Distribution of wine quality is normally distributed. 
@@ -220,27 +272,29 @@ Total sulfur dioxide was log transformed and after that, as a result, we got nor
 
 # Bivariate Plots Section
 
-```{r Two var cor}
+```{r Two var cor , fig.height=10, fig.width=10}
 dropVar <- winedf[,!colnames(winedf) %in% c("X", "quality.class")]
+
 ggpairs(dropVar,
         columnLabels=c("fix.aci", "vio.aci","ci.aci", "res.sug"
                        ,"chlo", "fr.su.dio", "to.su.dio", "dens"
-                       , "pH", "sulph", "alco","qual"))
+                       , "pH", "sulph", "alco","qual")) + 
+  theme(
+        axis.ticks = element_blank(),
+        axis.text = element_blank())
+
 ```
 
-Ggpairs plot shows relationship correlations between two variables. In the calculation, I excluded variables X and quality.class. From plot we can see some positive relationship between: fixed acidity and density (r = 0.668), fixed acidity and citric acid (r = 0.672), quality and alcohol (r = 0.476). Also some strong negative relationship between: fixed acidity and pH (r = -0.683), citric acid and pH (r = -0.542 ), alcohol and density (r = -0.496)
+Plot shows relationship correlations between two variables. In the calculation, I excluded variables X and quality.class. From plot we can see some positive relationship between: fixed acidity and density (r = 0.668), fixed acidity and citric acid (r = 0.672), quality and alcohol (r = 0.476). Also some strong negative relationship between: fixed acidity and pH (r = -0.683), citric acid and pH (r = -0.542 ), alcohol and density (r = -0.496)
 
 We observed the best quality correlation it's with alcohol and the best alcohol correlation it's with density. The best density correlation being the fixed acidity (quality->alcohol->density->fixed acidity).
 
 ```{r Quality vs Alchohol}
-qplot(x=winedf$quality.class, 
-      y=winedf$alcohol, 
-      data=winedf, 
-      geom="jitter", 
-      alpha=0.05) + 
+ggplot(data=winedf,aes (x=winedf$quality.class, y=winedf$alcohol)) + 
   geom_boxplot() +
-  xlab("Quality classification") +
-  ylab("alchocol (% by volume)")+
+  geom_jitter(alpha=0.07)+
+  xlab ("Quality cateqory") +
+  ylab("Alcohol (% by volume)")+
   theme_bw()
 
 cor.test(winedf$quality, winedf$alcohol)
@@ -248,13 +302,12 @@ cor.test(winedf$quality, winedf$alcohol)
 A graph shows a positive relationship between alcohol and quality level with a correlation coefficient of 0.476. We can notice that bad and average wines have alcohol percent concentrated around 10. Excellent wines have alcohol percent concentrated near 11.6. 
 
 ```{r Quality vs Density}
-qplot(x=winedf$quality.class, 
-      y=winedf$density, 
-      data=winedf, 
-      geom="jitter", 
-      alpha=0.1) + 
+ggplot(data=winedf,
+       aes (x=winedf$quality.class, 
+            y=winedf$density)) + 
   geom_boxplot() +
-  xlab("Quality classification") +
+  geom_jitter(alpha=0.07)+
+  xlab ("Quality cateqory") +
   ylab("density (g / cm^3)")+
   theme_bw()
 
@@ -263,14 +316,14 @@ cor.test(winedf$quality, winedf$density)
 Quality wines have on average less density than bad or average wines. We notice a negative correlation between quality and density (r = -0.174).
 
 ```{r Quality vs Residual sugar}
-qplot(x=winedf$quality.class, 
-      y=winedf$residual.sugar, 
-      data=winedf, 
-      geom="jitter", 
-      alpha=0.2) + 
+ggplot(data=winedf,
+       aes (x=winedf$quality.class, 
+            y=winedf$residual.sugar)) + 
   geom_boxplot() +
-  coord_cartesian(ylim = c(min(winedf$residual.sugar), quantile(winedf$residual.sugar, 0.98))) +
-  xlab("Quality classification") +
+  geom_jitter(alpha=0.06)+
+  coord_cartesian(ylim = c(min(winedf$residual.sugar), 
+                           quantile(winedf$residual.sugar, 0.98)))+
+  xlab ("Quality classification") +
   ylab("residual sugar (g / dm^3)")+
   theme_bw()
 
@@ -279,14 +332,14 @@ cor.test(winedf$quality, winedf$residual.sugar)
 There's almost no difference in the median residual sugar for any quality level. Also, there's a weak correlation between quality and residual sugar (r = 0.014).
 
 ```{r Quality vs Volatile acidity}
-qplot(x=winedf$quality.class, 
-      y=winedf$volatile.acidity, 
-      data=winedf, 
-      geom="jitter", 
-      alpha=0.01) + 
+ggplot(data=winedf,
+       aes (x=winedf$quality.class, 
+            y=winedf$volatile.acidity)) + 
   geom_boxplot() +
-  coord_cartesian(ylim = c(min(winedf$volatile.acidity), quantile(winedf$volatile.acidity, 0.99))) +
-  xlab("Quality classification") +
+  geom_jitter(alpha=0.08)+
+  coord_cartesian(ylim = c(min(winedf$volatile.acidity), 
+                           quantile(winedf$volatile.acidity, 0.98)))+
+  xlab ("Quality classification") +
   ylab("volatile acidity (g / dm^3)")+
   theme_bw()
 
@@ -299,8 +352,10 @@ ggplot(data = winedf
       ,aes(x = alcohol, y = density)) +
   geom_point(alpha = 0.2) + 
   stat_smooth(method = 'lm') +
-  coord_cartesian(xlim = c(min(winedf$alcohol), quantile(winedf$alcohol, 0.99))
-                 ,ylim = c(min(winedf$density), quantile(winedf$density, 0.99)))+
+  coord_cartesian(xlim = c(min(winedf$alcohol), 
+                           quantile(winedf$alcohol, 0.99))
+                 ,ylim = c(min(winedf$density), 
+                           quantile(winedf$density, 0.99)))+
   xlab("alcohol (% by volume)")+
   ylab("density (g / cm^3)")+
   theme_bw()
@@ -314,8 +369,10 @@ ggplot(data = winedf
       ,aes(x = volatile.acidity , y = alcohol)) +
   geom_point(alpha = 0.2) + 
   stat_smooth(method = 'lm') +
-  coord_cartesian(xlim = c(min(winedf$volatile.acidity), quantile(winedf$volatile.acidity, 0.99))
-                 ,ylim = c(min(winedf$alcohol), quantile(winedf$alcohol, 0.99)))+
+  coord_cartesian(xlim = c(min(winedf$volatile.acidity), 
+                           quantile(winedf$volatile.acidity, 0.99))
+                 ,ylim = c(min(winedf$alcohol), 
+                           quantile(winedf$alcohol, 0.99)))+
   xlab("volatile acidity (g / dm^3)")+
   ylab("alcohol (% by volume)")+
   theme_bw()
@@ -358,6 +415,7 @@ ggplot(data = winedf
   xlab("citric acid (g / dm^3)")+
   ylab("volatile acidity (g / cm^3)") +
   theme_bw()
+
 cor.test(winedf$fixed.acidity, winedf$citric.acid)
 ```
 From the plot, we can see the strongest correlation in our dataset between citric acid and fixed acidity (r = 0.672).
@@ -400,13 +458,12 @@ The densities of excellent wines are concentrated between 0.995 and 0.997 with a
 
 
 ```{r Multivariate_Plots DFQ}
-
-  ggplot(data=winedf, aes(fixed.acidity, colour=quality.class)) + 
-    geom_density() + 
-    xlab("Fixed acidity (g/dm^3)") + 
-    ylab("Density (g / cm^3)") + 
-    labs(colour="Quality classification") +
-    theme_bw()
+ggplot(data=winedf, aes(fixed.acidity, colour=quality.class)) + 
+  geom_density() + 
+  xlab("Fixed acidity (g/dm^3)") + 
+  ylab("Density (g / cm^3)") + 
+  labs(colour="Quality classification") +
+  theme_bw()
 
 ```
 
@@ -422,8 +479,10 @@ ggplot(data = winedf,
            y = citric.acid,
            color = quality.class)) +
   coord_cartesian(
-    xlim =  c(min(winedf$volatile.acidity), quantile(winedf$volatile.acidity, 0.99))
-    ,ylim = c(min(winedf$citric.acid), quantile(winedf$citric.acid, 0.99))
+    xlim =  c(min(winedf$volatile.acidity), 
+              quantile(winedf$volatile.acidity, 0.99))
+    ,ylim = c(min(winedf$citric.acid), 
+              quantile(winedf$citric.acid, 0.99))
                   ) +
   geom_point() +
   xlab("volatile acidity (g/dm^3)") + 
@@ -505,7 +564,8 @@ ggplot(data = winedf,
   ylab("Alcohol (% by volume)") +
   theme_bw() +
   labs(color="Quality classification")+
-  coord_cartesian(xlim = c(min(winedf$volatile.acidity), quantile(winedf$volatile.acidity, 0.99))) +
+  coord_cartesian(xlim = c(min(winedf$volatile.acidity), 
+                           quantile(winedf$volatile.acidity, 0.99))) +
     ggtitle("Alcohol and volatile acidity by quality")
 
 ```
@@ -538,4 +598,5 @@ http://ggplot2.tidyverse.org/reference/geom_density.html
 
 http://ggplot2.tidyverse.org/reference/geom_bar.html
 
+http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2
 
