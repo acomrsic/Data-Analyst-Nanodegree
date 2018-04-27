@@ -1,2 +1,2 @@
 # Data Analyst Nanodegree
-Data Analyst Nanodegree Read ME
+Data Analyst Nanodegree project solutions. 
